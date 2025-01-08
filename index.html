@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="responsive.css">
   <title>Digital Clock with Alarm</title>
   <style>
     body {
@@ -36,174 +35,58 @@
     .clock {
       font-size: 4rem;
       color: #1a8952;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
-    .alarm-container {
-      margin-bottom: 10px;
-    }
-
-    .alarm-inputs {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .alarm-input {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #d1d5db;
-      border-radius: 5px;
-      margin-right: 10px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-
-    .alarm-input:focus {
-      border-color: #64917a;
-      outline: none;
-    }
-
-    .alarm-btn {
-      padding: 10px 20px;
-      background-color: #64917a;
-      color: #ffffff;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .alarm-btn:hover {
-      background-color: #64917a;
+    .alarm-container, .stopwatch-container, .timer-container {
+      margin-bottom: 30px;
     }
 
     .alarm-list {
       list-style: none;
       padding: 0;
+      max-height: 150px;
+      overflow-y: auto;
     }
 
     .alarm-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
       background-color: #f9fafb;
       border: 1px solid #e2e8f0;
       border-radius: 5px;
+      padding: 10px;
       margin-bottom: 10px;
     }
 
-    .alarm-time {
-      font-size: 1rem;
-      color: #333;
-    }
-
-    .alarm-remove-btn {
+    .alarm-item button {
       background-color: #ef4444;
-      color: #ffffff;
+      color: white;
       border: none;
       border-radius: 5px;
       padding: 5px 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
 
-    .alarm-remove-btn:hover {
+    .alarm-item button:hover {
       background-color: #dc2626;
     }
 
-    .stopwatch-container {
-      margin-bottom: 10px;
-    }
-
-    .stopwatch {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .stopwatch-btns {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    .stopwatch-btn {
+    .btn {
       padding: 10px 20px;
       background-color: #64917a;
-      color: #ffffff;
+      color: white;
       border: none;
       border-radius: 5px;
-      font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s;
+      margin: 5px;
     }
 
-    .stopwatch-btn:hover {
-      background-color: #64917a;
+    .btn:hover {
+      background-color: #567f68;
     }
 
-    .timer-container {
-      margin-bottom: 80px;
-    }
-
-    .timer {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .timer-inputs {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .timer-input {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #d1d5db;
-      border-radius: 5px;
-      margin-right: 10px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-
-    .timer-input:focus {
-      border-color: #64917a;
-      outline: none;
-    }
-
-    .timer-btns {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    .timer-btn {
-      padding: 10px 20px;
-      background-color: #64917a;
-      color: #ffffff;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .timer-btn:hover {
-      background-color: #64917a;
-    }
-
-    .footer {
-      background-color: #64917a;
-      color: #ffffff;
-      text-align: center;
-      padding: 10px 0;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
     @media (max-width: 768px) {
       .container {
         padding: 20px;
@@ -217,6 +100,21 @@
         font-size: 3rem;
       }
     }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 90%;
+        padding: 15px;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
+
+      .clock {
+        font-size: 2.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -225,115 +123,94 @@
     <div class="clock" id="clock">00:00:00</div>
 
     <div class="alarm-container">
-      <h2 class="subtitle">Alarm</h2>
-      <div class="alarm-inputs">
-        <input type="time" id="alarm-time" class="alarm-input" placeholder="Set Alarm Time">
-        <button id="set-alarm-btn" class="alarm-btn">Set Alarm</button>
-      </div>
+      <h2>Alarm</h2>
+      <input type="time" id="alarm-time">
+      <button class="btn" id="set-alarm-btn">Set Alarm</button>
       <ul class="alarm-list" id="alarm-list"></ul>
     </div>
 
     <div class="stopwatch-container">
-      <h2 class="subtitle">Stopwatch</h2>
-      <div class="stopwatch" id="stopwatch">00:00:00</div>
-      <div class="stopwatch-btns">
-        <button id="start-stopwatch-btn" class="stopwatch-btn">Start</button>
-        <button id="stop-stopwatch-btn" class="stopwatch-btn">Stop</button>
-        <button id="reset-stopwatch-btn" class="stopwatch-btn">Reset</button>
-      </div>
+      <h2>Stopwatch</h2>
+      <div id="stopwatch">00:00:00</div>
+      <button class="btn" id="start-stopwatch-btn">Start</button>
+      <button class="btn" id="stop-stopwatch-btn">Stop</button>
+      <button class="btn" id="reset-stopwatch-btn">Reset</button>
     </div>
 
     <div class="timer-container">
-      <h2 class="subtitle">Timer</h2>
-      <div class="timer-inputs">
-        <input type="number" id="timer-minutes" class="timer-input" placeholder="Minutes" min="0">
-        <input type="number" id="timer-seconds" class="timer-input" placeholder="Seconds" min="0">
-      </div>
-      <div class="timer" id="timer">00:00</div>
-      <div class="timer-btns">
-        <button id="start-timer-btn" class="timer-btn">Start</button>
-        <button id="stop-timer-btn" class="timer-btn">Stop</button>
-        <button id="reset-timer-btn" class="timer-btn">Reset</button>
-      </div>
+      <h2>Timer</h2>
+      <input type="number" id="timer-minutes" placeholder="Minutes" min="0">
+      <input type="number" id="timer-seconds" placeholder="Seconds" min="0">
+      <div id="timer">00:00</div>
+      <button class="btn" id="start-timer-btn">Start</button>
+      <button class="btn" id="stop-timer-btn">Stop</button>
+      <button class="btn" id="reset-timer-btn">Reset</button>
     </div>
   </div>
-  <footer class="footer">
-    <p>Digital Clock with Alarm © 2025 Zeyad Gaber | All Rights Reserved</p>
-  </footer>
+
+  <audio id="alarm-sound" src="https://www.soundjay.com/button/sounds/beep-07.mp3"></audio>
+
   <script>
     const clockElement = document.getElementById('clock');
-    const alarmListElement = document.getElementById('alarm-list');
-    const alarmTimeInput = document.getElementById('alarm-time');
+    const alarmList = document.getElementById('alarm-list');
+    const alarmInput = document.getElementById('alarm-time');
     const setAlarmBtn = document.getElementById('set-alarm-btn');
+    const alarmSound = document.getElementById('alarm-sound');
+    let alarms = [];
+
     const stopwatchElement = document.getElementById('stopwatch');
     const startStopwatchBtn = document.getElementById('start-stopwatch-btn');
     const stopStopwatchBtn = document.getElementById('stop-stopwatch-btn');
     const resetStopwatchBtn = document.getElementById('reset-stopwatch-btn');
+    let stopwatchTime = 0;
+    let stopwatchInterval = null;
+
     const timerElement = document.getElementById('timer');
     const timerMinutesInput = document.getElementById('timer-minutes');
     const timerSecondsInput = document.getElementById('timer-seconds');
     const startTimerBtn = document.getElementById('start-timer-btn');
     const stopTimerBtn = document.getElementById('stop-timer-btn');
     const resetTimerBtn = document.getElementById('reset-timer-btn');
-
-    let alarms = [];
-    let stopwatchInterval;
-    let stopwatchTime = 0;
-    let timerInterval;
     let timerTime = 0;
+    let timerInterval = null;
 
     function updateClock() {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      clockElement.textContent = `${hours}:${minutes}:${seconds}`;
-
-      checkAlarms(now);
-    }
-
-    function checkAlarms(now) {
-      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      alarms.forEach(alarm => {
-        if (alarm.time === currentTime) {
-          alert(`Alarm: ${alarm.time}`);
-          alarms = alarms.filter(a => a.time !== alarm.time);
-          updateAlarmList();
+      clockElement.textContent = now.toTimeString().split(' ')[0];
+      alarms.forEach((alarm, index) => {
+        if (alarm === now.toTimeString().substring(0, 5)) {
+          alarmSound.play();
+          alert(`Alarm: ${alarm}`);
+          alarms.splice(index, 1);
+          renderAlarms();
         }
       });
     }
 
     function setAlarm() {
-      const alarmTime = alarmTimeInput.value;
-      if (alarmTime) {
-        alarms.push({ time: alarmTime });
-        updateAlarmList();
-        alarmTimeInput.value = '';
+      const alarmTime = alarmInput.value;
+      if (alarmTime && !alarms.includes(alarmTime)) {
+        alarms.push(alarmTime);
+        renderAlarms();
       }
     }
 
-    function updateAlarmList() {
-      alarmListElement.innerHTML = '';
-      alarms.forEach(alarm => {
-        const alarmItem = document.createElement('li');
-        alarmItem.className = 'alarm-item';
-
-        const alarmTime = document.createElement('div');
-        alarmTime.className = 'alarm-time';
-        alarmTime.textContent = alarm.time;
-
-        const alarmRemoveBtn = document.createElement('button');
-        alarmRemoveBtn.className = 'alarm-remove-btn';
-        alarmRemoveBtn.textContent = 'Remove';
-        alarmRemoveBtn.addEventListener('click', () => {
-          alarms = alarms.filter(a => a.time !== alarm.time);
-          updateAlarmList();
-        });
-
-        alarmItem.appendChild(alarmTime);
-        alarmItem.appendChild(alarmRemoveBtn);
-        alarmListElement.appendChild(alarmItem);
+    function renderAlarms() {
+      alarmList.innerHTML = '';
+      alarms.forEach((alarm) => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('alarm-item');
+        listItem.innerHTML = `
+          <span>${alarm}</span>
+          <button onclick="removeAlarm('${alarm}')">Remove</button>
+        `;
+        alarmList.appendChild(listItem);
       });
+    }
+
+    function removeAlarm(alarm) {
+      alarms = alarms.filter((a) => a !== alarm);
+      renderAlarms();
     }
 
     function startStopwatch() {
@@ -351,9 +228,9 @@
     }
 
     function resetStopwatch() {
-      stopStopwatch();
       stopwatchTime = 0;
       updateStopwatch();
+      stopStopwatch();
     }
 
     function updateStopwatch() {
@@ -364,18 +241,19 @@
     }
 
     function startTimer() {
-      const minutes = parseInt(timerMinutesInput.value, 10) || 0;
-      const seconds = parseInt(timerSecondsInput.value, 10) || 0;
+      const minutes = parseInt(timerMinutesInput.value) || 0;
+      const seconds = parseInt(timerSecondsInput.value) || 0;
       timerTime = minutes * 60 + seconds;
 
       if (timerTime > 0 && !timerInterval) {
         timerInterval = setInterval(() => {
-          timerTime--;
-          updateTimer();
           if (timerTime <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
             alert('Timer finished!');
+          } else {
+            timerTime--;
+            updateTimer();
           }
         }, 1000);
       }
@@ -390,8 +268,6 @@
       stopTimer();
       timerTime = 0;
       updateTimer();
-      timerMinutesInput.value = '';
-      timerSecondsInput.value = '';
     }
 
     function updateTimer() {
